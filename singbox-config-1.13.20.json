@@ -1,0 +1,570 @@
+{
+  "$schema": "https://sing-box.sagernet.org/schema.json",
+  "log": {
+    "disabled": false,
+    "level": "warn",
+    "output": "",
+    "timestamp": true
+  },
+  "experimental": {
+    "clash_api": {
+      "external_controller": "127.0.0.1:41000",
+      "external_ui": "",
+      "external_ui_download_url": "",
+      "external_ui_download_detour": "主代理",
+      "secret": "zhy20060916",
+      "default_mode": "rule",
+      "access_control_allow_origin": [
+        "*"
+      ],
+      "access_control_allow_private_network": false
+    },
+    "cache_file": {
+      "enabled": true,
+      "path": "cache.db",
+      "cache_id": "ID_dd0wfs1d",
+      "store_fakeip": true,
+      "rdrc_timeout": "7d"
+    }
+  },
+  "inbounds": [
+    {
+      "type": "mixed",
+      "tag": "mixed-in",
+      "listen": "127.0.0.1",
+      "listen_port": 41180,
+      "tcp_fast_open": true,
+      "tcp_multi_path": true,
+      "udp_fragment": false
+    },
+    {
+      "type": "tun",
+      "tag": "tun-in",
+      "interface_name": "tun",
+      "address": [
+        "172.18.0.1/30",
+        "fdfe:dcba:9876::1/126"
+      ],
+      "mtu": 0,
+      "auto_route": true,
+      "strict_route": true,
+      "route_exclude_address": [
+        "0.0.0.0/8",
+        "10.0.0.0/8",
+        "100.64.0.0/10",
+        "192.168.0.0/16",
+        "172.16.0.0/12"
+      ],
+      "stack": "mixed"
+    },
+    {
+      "type": "socks",
+      "tag": "socks-in",
+      "listen": "127.0.0.1",
+      "listen_port": 41170,
+      "tcp_fast_open": true,
+      "tcp_multi_path": true,
+      "udp_fragment": false
+    }
+  ],
+  "outbounds": [
+    {
+      "type": "selector",
+      "tag": "主代理",
+      "interrupt_exist_connections": true,
+      "outbounds": [
+        "JP自动-mitce",
+        "SG自动-mitce",
+        "HK自动-mitce",
+        "US自动-mitce",
+        "TW自动-mitce",
+        "KR自动-mitce",
+        "直连",
+        "SNTP自选"
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "SNTP自选",
+      "interrupt_exist_connections": true,
+      "outbounds": []
+    },
+    {
+      "type": "selector",
+      "tag": "openai",
+      "interrupt_exist_connections": true,
+      "outbounds": [
+        "主代理",
+        "US自动-mitce",
+        "HK自动-mitce",
+        "KR自动-mitce",
+        "SG自动-mitce",
+        "JP自动-mitce",
+        "TW自动-mitce"
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "google",
+      "interrupt_exist_connections": true,
+      "outbounds": [
+        "主代理",
+        "直连",
+        "SNTP自选",
+        "JP自动-mitce",
+        "TW自动-mitce",
+        "HK自动-mitce",
+        "KR自动-mitce",
+        "SG自动-mitce",
+        "US自动-mitce"
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "youtube",
+      "interrupt_exist_connections": true,
+      "outbounds": [
+        "直连",
+        "KR自动-mitce",
+        "HK自动-mitce",
+        "TW自动-mitce",
+        "US自动-mitce",
+        "SG自动-mitce",
+        "JP自动-mitce",
+        "SNTP自选",
+        "主代理",
+        "google"
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "bilibili",
+      "interrupt_exist_connections": true,
+      "outbounds": [
+        "直连",
+        "KR自动-mitce",
+        "SG自动-mitce",
+        "US自动-mitce",
+        "HK自动-mitce",
+        "JP自动-mitce",
+        "TW自动-mitce",
+        "SNTP自选",
+        "主代理"
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "microsoft",
+      "interrupt_exist_connections": true,
+      "outbounds": [
+        "主代理",
+        "SNTP自选",
+        "GLOBAL",
+        "JP自动-mitce",
+        "TW自动-mitce",
+        "HK自动-mitce",
+        "US自动-mitce",
+        "SG自动-mitce",
+        "KR自动-mitce",
+        "直连"
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "telegram",
+      "interrupt_exist_connections": true,
+      "outbounds": [
+        "直连",
+        "KR自动-mitce",
+        "HK自动-mitce",
+        "TW自动-mitce",
+        "JP自动-mitce",
+        "SG自动-mitce",
+        "US自动-mitce",
+        "SNTP自选",
+        "主代理"
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "🐟 漏网之鱼",
+      "interrupt_exist_connections": true,
+      "outbounds": [
+        "主代理",
+        "直连"
+      ]
+    },
+    {
+      "type": "selector",
+      "tag": "GLOBAL",
+      "interrupt_exist_connections": true,
+      "outbounds": [
+        "主代理",
+        "直连"
+      ]
+    },
+    {
+      "type": "urltest",
+      "tag": "US自动-mitce",
+      "url": "https://www.google.com",
+      "interval": "1m",
+      "tolerance": 80,
+      "interrupt_exist_connections": true,
+      "outbounds": []
+    },
+    {
+      "type": "urltest",
+      "tag": "HK自动-mitce",
+      "url": "https://www.google.com",
+      "interval": "1m",
+      "tolerance": 80,
+      "interrupt_exist_connections": true,
+      "outbounds": []
+    },
+    {
+      "type": "urltest",
+      "tag": "TW自动-mitce",
+      "url": "https://www.google.com",
+      "interval": "1m",
+      "tolerance": 80,
+      "interrupt_exist_connections": true,
+      "outbounds": []
+    },
+    {
+      "type": "urltest",
+      "tag": "JP自动-mitce",
+      "url": "https://www.google.com",
+      "interval": "1m",
+      "tolerance": 80,
+      "interrupt_exist_connections": true,
+      "outbounds": []
+    },
+    {
+      "type": "urltest",
+      "tag": "SG自动-mitce",
+      "url": "https://www.google.com",
+      "interval": "1m",
+      "tolerance": 80,
+      "interrupt_exist_connections": true,
+      "outbounds": []
+    },
+    {
+      "type": "urltest",
+      "tag": "KR自动-mitce",
+      "url": "https://www.google.com",
+      "interval": "1m",
+      "tolerance": 80,
+      "interrupt_exist_connections": true,
+      "outbounds": []
+    },
+    {
+      "type": "selector",
+      "tag": "直连",
+      "interrupt_exist_connections": true,
+      "outbounds": [
+        "direct"
+      ]
+    },
+    {
+      "type": "direct",
+      "tag": "direct"
+    }
+  ],
+  "route": {
+    "rules": [
+      {
+        "action": "sniff",
+        "inbound": "tun-in"
+      },
+      {
+        "action": "hijack-dns",
+        "protocol": "dns"
+      },
+      {
+        "action": "route",
+        "clash_mode": "direct",
+        "outbound": "直连"
+      },
+      {
+        "action": "route",
+        "clash_mode": "global",
+        "outbound": "GLOBAL"
+      },
+      {
+        "action": "route",
+        "domain_suffix": "123pan.cn",
+        "outbound": "直连"
+      },
+      {
+        "action": "route",
+        "domain_suffix": "ecust.edu.cn",
+        "outbound": "直连"
+      },
+      {
+        "action": "route",
+        "rule_set": [
+          "openai-geosite.srs"
+        ],
+        "outbound": "openai"
+      },
+      {
+        "action": "route",
+        "rule_set": [
+          "bilibili-geosite.srs"
+        ],
+        "outbound": "bilibili"
+      },
+      {
+        "action": "route",
+        "rule_set": [
+          "microsoft-geosite.srs"
+        ],
+        "outbound": "microsoft"
+      },
+      {
+        "action": "route",
+        "rule_set": [
+          "telegram-geosite.srs",
+          "telegram-geoip.srs"
+        ],
+        "outbound": "telegram"
+      },
+      {
+        "action": "route",
+        "rule_set": [
+          "youtube-geosite.srs"
+        ],
+        "outbound": "youtube"
+      },
+      {
+        "action": "route",
+        "rule_set": [
+          "google-geoip.srs",
+          "google-geosite.srs"
+        ],
+        "outbound": "google"
+      },
+      {
+        "action": "route",
+        "network": "icmp",
+        "outbound": "直连"
+      },
+      {
+        "action": "route",
+        "rule_set": [
+          "GeoSite-Private"
+        ],
+        "outbound": "直连"
+      },
+      {
+        "action": "route",
+        "rule_set": [
+          "GeoSite-CN"
+        ],
+        "outbound": "直连"
+      },
+      {
+        "action": "route",
+        "rule_set": [
+          "GeoIP-Private"
+        ],
+        "outbound": "直连"
+      },
+      {
+        "action": "route",
+        "rule_set": [
+          "GeoIP-CN"
+        ],
+        "outbound": "直连"
+      },
+      {
+        "action": "route",
+        "inbound": "tun-in",
+        "outbound": "🐟 漏网之鱼"
+      },
+      {
+        "action": "route",
+        "inbound": "mixed-in",
+        "outbound": "🐟 漏网之鱼"
+      }
+    ],
+    "rule_set": [
+      {
+        "tag": "openai-geosite.srs",
+        "type": "remote",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/openai.srs",
+        "format": "binary",
+        "download_detour": "主代理",
+        "update_interval": "1600s"
+      },
+      {
+        "tag": "microsoft-geosite.srs",
+        "type": "remote",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/microsoft.srs",
+        "format": "binary",
+        "download_detour": "主代理",
+        "update_interval": "16000s"
+      },
+      {
+        "tag": "google-geoip.srs",
+        "type": "remote",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geoip/google.srs",
+        "format": "binary",
+        "download_detour": "主代理"
+      },
+      {
+        "tag": "youtube-geosite.srs",
+        "type": "remote",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/youtube.srs",
+        "format": "binary",
+        "download_detour": "主代理",
+        "update_interval": "16000s"
+      },
+      {
+        "tag": "google-geosite.srs",
+        "type": "remote",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/google.srs",
+        "format": "binary",
+        "download_detour": "主代理",
+        "update_interval": "16000s"
+      },
+      {
+        "tag": "bilibili-geosite.srs",
+        "type": "remote",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/bilibili.srs",
+        "format": "binary",
+        "download_detour": "主代理"
+      },
+      {
+        "tag": "telegram-geosite.srs",
+        "type": "remote",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/telegram.srs",
+        "format": "binary",
+        "download_detour": "主代理"
+      },
+      {
+        "tag": "telegram-geoip.srs",
+        "type": "remote",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geoip/telegram.srs",
+        "format": "binary",
+        "download_detour": "主代理"
+      },
+      {
+        "tag": "Category-Ads",
+        "type": "remote",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/category-ads-all.srs",
+        "format": "binary",
+        "download_detour": "主代理"
+      },
+      {
+        "tag": "GeoIP-Private",
+        "type": "remote",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geoip/private.srs",
+        "format": "binary",
+        "download_detour": "主代理"
+      },
+      {
+        "tag": "GeoSite-Private",
+        "type": "remote",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/private.srs",
+        "format": "binary",
+        "download_detour": "主代理"
+      },
+      {
+        "tag": "GeoIP-CN",
+        "type": "remote",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geoip/cn.srs",
+        "format": "binary",
+        "download_detour": "主代理"
+      },
+      {
+        "tag": "GeoSite-CN",
+        "type": "remote",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/cn.srs",
+        "format": "binary",
+        "download_detour": "主代理"
+      },
+      {
+        "tag": "GeoLocation-!CN",
+        "type": "remote",
+        "url": "https://testingcf.jsdelivr.net/gh/MetaCubeX/meta-rules-dat@sing/geo/geosite/geolocation-!cn.srs",
+        "format": "binary",
+        "download_detour": "主代理"
+      }
+    ],
+    "auto_detect_interface": true,
+    "final": "主代理",
+    "default_domain_resolver": {
+      "server": "Local-DNS"
+    }
+  },
+  "dns": {
+    "servers": [
+      {
+        "tag": "Fake-IP",
+        "type": "fakeip",
+        "inet4_range": "198.18.0.0/15",
+        "inet6_range": "fc00::/18"
+      },
+      {
+        "tag": "Local-DNS",
+        "type": "https",
+        "server_port": 443,
+        "server": "223.5.5.5",
+        "path": "/dns-query"
+      },
+      {
+        "tag": "Local-DNS-Resolver",
+        "type": "udp",
+        "server_port": 53,
+        "server": "223.5.5.5"
+      },
+      {
+        "tag": "Remote-DNS",
+        "type": "https",
+        "detour": "直连",
+        "server_port": 443,
+        "server": "1.1.1.1",
+        "path": "/dns-query"
+      },
+      {
+        "tag": "Remote-DNS-Resolver",
+        "type": "https",
+        "detour": "主代理",
+        "server_port": 443,
+        "server": "1.1.1.1",
+        "path": "/dns-query"
+      }
+    ],
+    "rules": [
+      {
+        "action": "route",
+        "clash_mode": "direct",
+        "server": "Local-DNS"
+      },
+      {
+        "action": "route",
+        "clash_mode": "global",
+        "server": "Remote-DNS"
+      },
+      {
+        "action": "route",
+        "rule_set": [
+          "GeoSite-CN"
+        ],
+        "server": "Local-DNS"
+      },
+      {
+        "action": "route",
+        "rule_set": [
+          "GeoLocation-!CN"
+        ],
+        "server": "Remote-DNS"
+      }
+    ],
+    "disable_cache": false,
+    "disable_expire": false,
+    "final": "Remote-DNS",
+    "strategy": "prefer_ipv4"
+  }
+}
